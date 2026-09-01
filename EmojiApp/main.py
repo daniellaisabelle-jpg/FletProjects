@@ -18,19 +18,26 @@ def main(page: ft.Page):
 
     def refresh_click(e):
         global IDX
+        btn = e.control
+        if btn.icon == ft.Icons.ARROW_RIGHT_SHARP:
+            IDX = IDX + 1
+        else:
+            IDX = IDX - 1
         # se idx > tamanho de emojis:
         # idx volta para 0
-        IDX = (IDX + 1) % len(EMOJIS)
+        IDX = IDX  % len(EMOJIS)
         # altera o elemento textual p emoji na posição idx
         input.value = EMOJIS[IDX]
     #elemento botão com icon de atualizar
-    btn = ft.IconButton(ft.Icons.REFRESH, on_click=refresh_click)
+    btn_left = ft.IconButton(ft.Icons.ARROW_LEFT_SHARP, on_click=refresh_click)
+    btn_right = ft.IconButton(ft.Icons.ARROW_RIGHT_SHARP, on_click=refresh_click)
     # elemento de layout; cada linha item inserido em controls irá ser posicionado em coluna desta linha. "INPUT" e "BTN" ficarão lado a lado.
     row = ft.Row(
         alignment= ft.MainAxisAlignment.CENTER,
         controls=[
+            btn_left,
             input,
-            btn
+            btn_right
         ]
     )
 

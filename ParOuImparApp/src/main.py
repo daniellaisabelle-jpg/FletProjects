@@ -2,25 +2,46 @@ import flet as ft
 
 
 def main(page: ft.Page):
-    counter = ft.Text("0", size=50, data=0)
+    def on_click_send(e):
+        value = input_txt.value
+        try:
+            int_value = int(value)
+            if (int_value % 2 == 0):
+                output_txt.value += f'{int_value} é par.\n'
+            else:
+                output_txt.value += f'{int_value} é ímpar.\n'
+        except ValueError:
+            output_txt.value += f'"{value}" não é um valor inteiro.\n'
+        input_txt.value = ''
 
-    def increment_click(e: ft.Event[ft.FloatingActionButton]):
-        counter.data += 1
-        counter.value = str(counter.data)
-
-    page.floating_action_button = ft.FloatingActionButton(
-        icon=ft.Icons.ADD, key="increment", on_click=increment_click
+    #---- Widgets
+    input_txt = ft.TextField(
+        expand=True,
+        hint_text='Digite um número inteiro...'
     )
-    page.add(
-        ft.SafeArea(
-            expand=True,
-            content=ft.Container(
-                content=counter,
-                alignment=ft.Alignment.CENTER,
-            ),
+    input_btn = ft.IconButton(
+        icon=ft.Icons.SEND,
+        on_click= on_click_send
         )
-    )
+    output_txt = ft.Text(value='')
 
+    #---- Layout
+    input_row = ft.Row(
+        controls=[input_txt, input_btn]
+    )
+    output_col = ft.Column(
+        expand=True,
+        horizontal_alignment= ft.CrossAxisAlignment.STRETCH,
+        scroll = ft.ScrollMode.AUTO,
+        controls=[output_txt]
+    )    
+    main_col = ft.Column(
+        expand=True,
+        controls=[input_row, output_col]
+    )
+    
+    page.title = 'ParOuImparApp'
+    page.add(main_col)
 
 if __name__ == "__main__":
     ft.run(main)
